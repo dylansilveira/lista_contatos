@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Contato.dart';
+import 'adicionaContato.dart';
 
 class ListaContatos extends StatefulWidget {
   const ListaContatos({Key? key}) : super(key: key);
@@ -32,13 +33,13 @@ class _ListaContatosState extends State<ListaContatos> {
                 leading: Column(
                   children: [
                     Icon(Icons.person),
-                    meusContatos[i].isHomem ? Icon(Icons.male) : Icon(Icons.female),
+                    if (meusContatos[i].favorito) Icon(Icons.star, color: Colors.yellow),
                   ],
                 ),
                 onTap: () => null,
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: () => null,
+                  onPressed: () => setState(() => meusContatos.removeAt(i)),
                 ),
               ),
             );
@@ -46,7 +47,11 @@ class _ListaContatosState extends State<ListaContatos> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => null,
+        onPressed: () async {
+          Contato? novoContato = await Navigator.push(context, MaterialPageRoute(builder: (_) => AdicionaContato()));
+          if (novoContato != null)
+            setState(() => meusContatos.add(novoContato));
+        },
       ),
     );
   }
