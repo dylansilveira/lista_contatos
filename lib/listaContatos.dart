@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Contato.dart';
 import 'adicionaContato.dart';
+import 'detalhesContato.dart';
 
 class ListaContatos extends StatefulWidget {
   const ListaContatos({Key? key}) : super(key: key);
@@ -33,13 +34,32 @@ class _ListaContatosState extends State<ListaContatos> {
                 leading: Column(
                   children: [
                     Icon(Icons.person),
-                    if (meusContatos[i].favorito) Icon(Icons.star, color: Colors.yellow),
+                    if (meusContatos[i].favorito) Icon(Icons.star, color: Color.fromRGBO(230, 185, 80, 1)),
                   ],
                 ),
-                onTap: () => null,
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => setState(() => meusContatos.removeAt(i)),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DetalhesContato(meusContatos[i]))),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Ainda não é possível editar contatos!'),
+                            action: SnackBarAction(
+                              label: 'Fechar',
+                              onPressed: () => null
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => setState(() => meusContatos.removeAt(i)),
+                    ),
+                  ],
                 ),
               ),
             );
